@@ -15,6 +15,7 @@ import { useBooking } from "../bookings/useBooking";
 import { formatCurrency } from "../../utils/helpers";
 import { useCheckin } from "./useCheckin";
 import { useSettings } from "../settings/useSettings";
+import Empty from "../../ui/Empty";
 
 const Box = styled.div`
   /* Box */
@@ -29,11 +30,16 @@ function CheckinBooking() {
   const { booking, isLoading } = useBooking();
   const [confirmPaid, setConfirmPaid] = useState(false);
   const [addBreakfast, setAddBreakfast] = useState(false);
-  useEffect(() => setConfirmPaid(booking?.isPaid ?? false), [booking]);
+
+  useEffect(() => {
+    setConfirmPaid(booking?.isPaid ?? false);
+  }, [booking]);
 
   const { settings, isLoading: isLoadingSettings } = useSettings();
 
   const moveBack = useMoveBack();
+
+  if (isLoading || isLoadingSettings) return <Spinner />;
 
   const {
     id: bookingId,
@@ -62,8 +68,6 @@ function CheckinBooking() {
   }
 
   const optionalBreakfastPrice = settings.breakfast * numNights * numGuests;
-
-  if (isLoading || isLoadingSettings) return <Spinner />;
 
   return (
     <>

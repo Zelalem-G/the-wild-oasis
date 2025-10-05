@@ -16,7 +16,6 @@ import { HiArrowUpOnSquare, HiTrash } from "react-icons/hi2";
 import { useCheckout } from "../check-in-out/useCheckout";
 import Modal from "../../ui/Modal";
 import ConfirmDelete from "../../ui/ConfirmDelete";
-import { deleteBooking } from "../../services/apiBookings";
 import { useDeleteBooking } from "./useDeleteBooking";
 
 const HeadingGroup = styled.div`
@@ -27,9 +26,8 @@ const HeadingGroup = styled.div`
 
 function BookingDetail() {
   const navigate = useNavigate();
-  const { booking, id: isLoading } = useBooking();
+  const { booking, isLoading } = useBooking();
 
-  const { status, bookingId } = booking;
   const moveBack = useMoveBack();
 
   const statusToTagName = {
@@ -42,6 +40,8 @@ function BookingDetail() {
   const { isDeleting, deleteBooking } = useDeleteBooking();
 
   if (isLoading) return <Spinner />;
+
+  const { status, id: bookingId } = booking;
 
   return (
     <>
