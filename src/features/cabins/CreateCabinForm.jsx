@@ -54,7 +54,7 @@ function CreateCabinForm({ cabinToEdit = {}, onCloseModal }) {
       onSubmit={handleSubmit(onSubmit, onError)}
       type={onCloseModal ? "modal" : "regular"}
     >
-      <FormRow lable="Cabin name" error={errors?.name?.message}>
+      <FormRow label="Cabin name" error={errors?.name?.message}>
         <Input
           disabled={isWorking}
           type="text"
@@ -65,7 +65,7 @@ function CreateCabinForm({ cabinToEdit = {}, onCloseModal }) {
         />
       </FormRow>
 
-      <FormRow lable="Maximum capacity" error={errors?.maxCapacity?.message}>
+      <FormRow label="Maximum capacity" error={errors?.maxCapacity?.message}>
         <Input
           disabled={isWorking}
           type="number"
@@ -80,7 +80,7 @@ function CreateCabinForm({ cabinToEdit = {}, onCloseModal }) {
         />
       </FormRow>
 
-      <FormRow lable="Regular price" error={errors?.regularPrice?.message}>
+      <FormRow label="Regular price" error={errors?.regularPrice?.message}>
         <Input
           disabled={isWorking}
           type="number"
@@ -95,7 +95,7 @@ function CreateCabinForm({ cabinToEdit = {}, onCloseModal }) {
         />
       </FormRow>
 
-      <FormRow lable="Discount" error={errors?.discount?.message}>
+      <FormRow label="Discount" error={errors?.discount?.message}>
         <Input
           disabled={isWorking}
           type="number"
@@ -111,7 +111,7 @@ function CreateCabinForm({ cabinToEdit = {}, onCloseModal }) {
       </FormRow>
 
       <FormRow
-        lable="Description for website"
+        label="Description for website"
         error={errors?.description?.message}
       >
         <Textarea
@@ -125,7 +125,7 @@ function CreateCabinForm({ cabinToEdit = {}, onCloseModal }) {
         />
       </FormRow>
 
-      <FormRow lable="Cabin photo">
+      <FormRow label="Cabin photo">
         <FileInput
           disabled={isWorking}
           id="image"
