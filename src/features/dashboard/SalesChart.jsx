@@ -24,26 +24,35 @@ const StyledSalesChart = styled(DashboardBox)`
 `;
 
 function SalesChart({ bookings, numDays }) {
-  const { isDarkMode } = useDarkmode();
+  const { isDarkmode } = useDarkmode();
 
   const allDays = eachDayOfInterval({
     start: subDays(new Date(), numDays - 1),
     end: new Date(),
   });
 
+  // a hash map (date -> sales data)
+  const salesMap = {};
+
+  for (const booking of bookings) {
+    const dayKey = format(new Date(booking.created_at), "MMM dd");
+
+    if (!salesMap[dayKey]) {
+      salesMap[dayKey] = { totalSales: 0, extrasSales: 0 };
+    }
+
+    salesMap[dayKey].totalSales += booking.totalPrice;
+    salesMap[dayKey].extrasSales += booking.extrasPrice;
+  }
+
   const data = allDays.map((day) => {
-    return {
-      lable: format(day, "MMM dd"),
-      totalSales: bookings
-        .filter((booking) => isSameDay(day, new Date(booking.created_at)))
-        .reduce((acc, cur) => acc + cur.totalPrice, 0),
-      extrasSales: bookings
-        .filter((booking) => isSameDay(day, new Date(booking.created_at)))
-        .reduce((acc, cur) => acc + cur.extrasPrice, 0),
-    };
+    const label = format(day, "MMM dd");
+    const daySales = salesMap[label] || { totalSales: 0, extrasSales: 0 };
+
+    return { label, ...daySales };
   });
 
-  const colors = isDarkMode
+  const colors = isDarkmode
     ? {
         totalSales: { stroke: "#4f46e5", fill: "#4f46e5" },
         extrasSales: { stroke: "#22c55e", fill: "#22c55e" },
@@ -59,12 +68,15 @@ function SalesChart({ bookings, numDays }) {
 
   return (
     <StyledSalesChart>
-      <Heading as="h2">Sales</Heading>
+      <Heading as="h2">
+        Sales from {format(allDays.at(0), "MMM dd yyyy")} &mdash;{" "}
+        {format(allDays.at(-1), "MMM dd yyyy")}
+      </Heading>
 
       <ResponsiveContainer height={300} width="100%">
         <AreaChart data={data} height={300} width={700}>
           <XAxis
-            dataKey="lable"
+            dataKey="label"
             tick={{ fill: colors.text }}
             tickLine={{ stroke: colors.text }}
           />
